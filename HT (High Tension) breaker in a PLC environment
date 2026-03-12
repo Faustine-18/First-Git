@@ -1,0 +1,51 @@
+# Simulation of HT Breaker Control in Python
+
+class HTBreaker:
+    def __init__(self):
+        self.breaker_status = False   # False = OFF, True = ON
+        self.trip_signal = False
+        self.close_signal = False
+        self.remote_control_enabled = True
+
+    def trip(self):
+        if self.breaker_status:
+            print("Breaker Tripped! Opening breaker...")
+            self.breaker_status = False
+        else:
+            print("Breaker already open.")
+        self.trip_signal = True
+        self.close_signal = False
+
+    def close(self):
+        if not self.breaker_status and not self.trip_signal:
+            print("Closing Breaker... Power ON")
+            self.breaker_status = True
+        elif self.trip_signal:
+            print("Cannot close breaker. Trip condition active!")
+        else:
+            print("Breaker already closed.")
+        self.close_signal = True
+
+    def status(self):
+        state = "ON" if self.breaker_status else "OFF"
+        print(f"Breaker Status: {state}")
+        return state
+
+
+# Example usage
+breaker = HTBreaker()
+
+# Initial status
+breaker.status()
+
+# Try closing breaker
+breaker.close()
+breaker.status()
+
+# Trip breaker
+breaker.trip()
+breaker.status()
+
+# Attempt to close after trip
+breaker.close()
+breaker.status()
